@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  spark-lab:
+    # Build the image using the Dockerfile in the current directory
+    build: .
+    # Mount the current directory to /app in the container for live-coding
+    volumes:
+      - .:/app
+    # Pass necessary environment variables
+    environment:
+      - JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    # Keep the container running for interactive development
+    command: tail -f /dev/null
+    tty: true
+    stdin_open: true

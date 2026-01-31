@@ -6,12 +6,13 @@ authors = [
     {name = "chgwyellow",email = "dinnis1107@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11,<3.12"
 dependencies = [
-    "pyspark (>=4.1.1,<5.0.0)",
     "polars (>=1.37.1,<2.0.0)",
     "pandas (>=3.0.0,<4.0.0)",
-    "pyarrow (>=23.0.0,<24.0.0)"
+    "pyarrow (>=23.0.0,<24.0.0)",
+    "pyspark (>=3.5.0,<4.0.0)",
+    "setuptools (>=80.10.2,<81.0.0)"
 ]
 
 

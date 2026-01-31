@@ -1,0 +1,65 @@
+{
+  "name": "PySpark Development Environment",
+
+  // Use docker-compose to build and run the container
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "spark-lab",
+  "workspaceFolder": "/app",
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      // VS Code extensions to install in the container
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ],
+
+      // VS Code settings
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.formatting.provider": "black",
+        "python.formatting.blackPath": "/usr/local/bin/black",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "python.analysis.typeCheckingMode": "basic",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "files.exclude": {
+          "**/__pycache__": true,
+          "**/*.pyc": true
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  // Features to add to the dev container
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [
+    4040, // Spark UI
+    8888 // Jupyter (if you add it later)
+  ],
+
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "echo 'Dev Container Ready! Python:' && python3 --version && echo 'Java:' && java -version && echo 'Spark:' && spark-submit --version 2>&1 | head -1",
+
+  // Comment out to connect as root instead
+  "remoteUser": "root",
+
+  // Keep the container running
+  "overrideCommand": true,
+  "shutdownAction": "stopCompose"
+}
