@@ -1,5 +1,15 @@
 data/*
 !data/.gitkeep
 
+# Environment variables
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
 # Docker usage guide (local reference only)
 DOCKER_USAGE.md

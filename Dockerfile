@@ -27,6 +27,10 @@ RUN curl -fsSL https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spar
     echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" > ${SPARK_HOME}/conf/spark-env.sh && \
     chmod +x ${SPARK_HOME}/conf/spark-env.sh
 
+# Download PostgreSQL JDBC Driver for Spark-PostgreSQL connectivity
+RUN curl -fsSL https://jdbc.postgresql.org/download/postgresql-42.7.1.jar \
+    -o ${SPARK_HOME}/jars/postgresql-42.7.1.jar
+
 # Set the working directory inside the container
 WORKDIR /app
 
