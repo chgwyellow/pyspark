@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StringType, DoubleType
+from pyspark.sql.types import DoubleType
 
 
 def main():
