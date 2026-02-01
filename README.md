@@ -89,6 +89,15 @@ docker-compose exec spark-lab python3 src/jobs/1_2_data_ingestion.py
 
 # 2.1 Basic DataFrame Operations
 docker-compose exec spark-lab python3 src/jobs/2_1_basic_operations.py
+
+# 2.2 Data Cleaning: Casting and Null Handling
+docker-compose exec spark-lab python3 src/jobs/2_2_casting_and_nulls.py
+
+# 3.1 Aggregation and GroupBy
+docker-compose exec spark-lab python3 src/jobs/3_1_aggregation.py
+
+# 3.2 Multi-table Join Operations
+docker-compose exec spark-lab python3 src/jobs/3_2_multi_table_join.py
 ```
 
 ---
@@ -107,6 +116,14 @@ docker-compose exec spark-lab python3 src/jobs/2_1_basic_operations.py
 | Topic | Code | Documentation | Key Concepts |
 |-------|------|---------------|--------------|
 | **2.1 Basic Operations** | [`2_1_basic_operations.py`](src/jobs/2_1_basic_operations.py) | [`2_1_basic_operations.md`](docs/2_1_basic_operations.md) | select, filter, withColumn, Immutability |
+| **2.2 Data Cleaning** | [`2_2_casting_and_nulls.py`](src/jobs/2_2_casting_and_nulls.py) | [`2_2_casting_and_nulls.md`](docs/2_2_casting_and_nulls.md) | Type Casting, Null Handling, fill, drop |
+
+### Chapter 3: Advanced Operations
+
+| Topic | Code | Documentation | Key Concepts |
+|-------|------|---------------|--------------|
+| **3.1 Aggregation** | [`3_1_aggregation.py`](src/jobs/3_1_aggregation.py) | [`3_1_aggregation_and_grouping.md`](docs/3_1_aggregation_and_grouping.md) | GroupBy, Aggregation Functions, Pivot Tables |
+| **3.2 Join Strategies** | [`3_2_multi_table_join.py`](src/jobs/3_2_multi_table_join.py) | [`3_2_join_strategies.md`](docs/3_2_join_strategies.md) | Inner/Left/Anti Join, Broadcast Join, Shuffle |
 
 ---
 
@@ -114,29 +131,36 @@ docker-compose exec spark-lab python3 src/jobs/2_1_basic_operations.py
 
 ```text
 pyspark/
-├── conf/                       
-│   └── log4j.properties        
-├── data/                       
-│   └── raw/                   
-│       └── equipment_logs.csv 
-├── docs/                      
-│   ├── 1_1_spark_core.md      
-│   ├── 1_2_data_ingestion.md  
-│   └── 2_1_basic_operations.md 
-├── src/                        
-│   ├── jobs/                  
+├── conf/
+│   └── log4j.properties
+├── data/
+│   ├── raw/
+│   │   └── equipment_logs.csv
+│   └── processed/
+├── docs/
+│   ├── 1_1_spark_core.md
+│   ├── 1_2_data_ingestion.md
+│   ├── 2_1_basic_operations.md
+│   ├── 2_2_casting_and_nulls.md
+│   ├── 3_1_aggregation_and_grouping.md
+│   └── 3_2_join_strategies.md
+├── src/
+│   ├── jobs/
 │   │   ├── 1_1_spark_core.py
 │   │   ├── 1_2_data_ingestion.py
 │   │   ├── 2_1_basic_operations.py
-│   │   └── check_env.py        
-│   └── utils/                 
-│       └── generate_raw_data.py 
-├── tests/                      
-├── notebook/                   
-├── Dockerfile                  
-├── docker-compose.yml          
-├── pyproject.toml              
-└── README.md                   
+│   │   ├── 2_2_casting_and_nulls.py
+│   │   ├── 3_1_aggregation.py
+│   │   ├── 3_2_multi_table_join.py
+│   │   └── check_env.py
+│   └── utils/
+│       └── generate_raw_data.py
+├── tests/
+├── notebook/
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml
+└── README.md
 ```
 
 ---
