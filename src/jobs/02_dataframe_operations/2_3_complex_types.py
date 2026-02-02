@@ -9,8 +9,8 @@ def main():
 
     # 1. Prepare data with Array and Struct (Simulating IoT Sensor Bursts)
     complex_data = [
-        ("DEV-101", [50.1, 50.5, 50.2], {"location": "Plant-A", "type": "Temp"}),
-        ("DEV-102", [80.0, 81.2], {"location": "Plant-B", "type": "Pressure"}),
+        ("B-58301", [50.1, 50.5, 50.2], {"location": "Plant-A", "type": "Temp"}),
+        ("B-58302", [80.0, 81.2], {"location": "Plant-B", "type": "Pressure"}),
     ]
 
     # Define Schema for complex structures

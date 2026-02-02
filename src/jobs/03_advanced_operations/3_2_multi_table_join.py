@@ -29,10 +29,10 @@ def main():
 
     # 2. Prepare Dimension Data (Simulated Device Master Data)
     device_master_data = [
-        ("DEV-101", "Sensor-Type-A", "B-58201"),
-        ("DEV-104", "Sensor-Type-A", "B-58201"),
-        ("DEV-105", "Sensor-Type-B", "B-58202"),
-        ("DEV-109", "Sensor-Type-C", "B-58203"),
+        ("B-58201", "Sensor-Type-A", "Cabin"),
+        ("B-58202", "Sensor-Type-A", "Gear"),
+        ("B-58301", "Sensor-Type-B", "Winglet"),
+        ("B-58302", "Sensor-Type-C", "APU"),
     ]
     master_columns = ["device_id", "category", "location"]
     master_df = spark.createDataFrame(data=device_master_data, schema=master_columns)

@@ -22,7 +22,7 @@ def main():
     parquet_df = spark.read.parquet(output_path)
 
     # Filter for a specific device - Spark won't scan the whole file if metadata helps
-    filtered_df = parquet_df.filter(F.col("device_id") == "DEV-101")
+    filtered_df = parquet_df.filter(F.col("device_id") == "B-58301")
 
     print("--- Reading from Parquet (Filtered) ---")
     filtered_df.show(5)

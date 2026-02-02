@@ -9,10 +9,10 @@ def main():
 
     # There is a "dirty" dataset
     dirty_data = [
-        (1, "DEV-101", "50.5", "Running"),
-        (2, "DEV-102", "80.0", None),  # Missing Status
-        (3, "DEV-103", "Broken", "Error"),  # Invalid Value (String)
-        (4, "DEV-104", None, "Idle"),  # Missing Value
+        (1, "B-58201", "50.5", "Running"),
+        (2, "B-58202", "80.0", None),  # Missing Status
+        (3, "B-58303", "Broken", "Error"),  # Invalid Value (String)
+        (4, "B-58304", None, "Idle"),  # Missing Value
     ]
 
     columns = ["log_id", "device_id", "raw_value", "status"]
