@@ -20,8 +20,8 @@ def generate_data(num_rows=1000):
         "log_id": range(1, num_rows + 1),
         "device_id": [np.random.choice(valid_tail_numbers) for _ in range(num_rows)],
         "timestamp": [
-            start_date + timedelta(minutes=np.random.randint(0, 10000))
-            for _ in range(num_rows)
+            start_date + timedelta(minutes=i * 5 + np.random.randint(0, 3))
+            for i in range(num_rows)
         ],
         "status": np.random.choice(
             ["Running", "Idle", "Error", "Maintenance"], num_rows
