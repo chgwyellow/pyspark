@@ -49,6 +49,11 @@ def main():
     print("--- Maintenance Shift Performance Report ---")
     report_df.show()
 
+    print("\n✨ Spark UI is now available at: http://localhost:4040")
+    print("📊 Check the 'SQL' tab to see the query execution plan")
+    print("⏱️  Check the 'Jobs' and 'Stages' tabs to see task details")
+    input("\n👉 Press Enter to stop the application and close Spark UI...")
+
     spark.stop()
 
 
