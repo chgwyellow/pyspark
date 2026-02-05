@@ -34,9 +34,9 @@ def main():
     # This join will trigger a Shuffle.
     # Because B-58201 has 4.5M rows, one specific partition will be 100x larger than others.
     skewed_joined_df = log_df.join(
-        aircraft_master_df, 
-        on=log_df.device_id == aircraft_master_df.tail_number, 
-        how="inner"
+        aircraft_master_df,
+        on=log_df.device_id == aircraft_master_df.tail_number,
+        how="inner",
     )
 
     # 4. Action: Force full computation to observe Spark UI

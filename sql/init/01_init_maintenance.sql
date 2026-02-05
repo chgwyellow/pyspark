@@ -1,6 +1,6 @@
 CREATE DATABASE maintenance_db;
 -- 1. Drop Tables if Exist and Create New Ones
-DROP TABLE IF EXISTS maintenance_work_orders;
+DROP TABLE IF EXISTS fact_maintenance_work_orders;
 DROP TABLE IF EXISTS dim_aircraft;
 CREATE TABLE dim_aircraft (
     tail_number VARCHAR(10) PRIMARY KEY,
@@ -8,7 +8,7 @@ CREATE TABLE dim_aircraft (
     delivery_date DATE,
     total_flight_hours INT
 );
-CREATE TABLE maintenance_work_orders (
+CREATE TABLE fact_maintenance_work_orders (
     wo_id SERIAL PRIMARY KEY,
     tail_number VARCHAR(10),
     issue_category VARCHAR(50),
@@ -55,7 +55,7 @@ VALUES -- Airbus A321neo (13 aircraft)
     ('B-58551', 'A350-1000', '2026-01-15', 20);
 -- 3. Insert Comprehensive Maintenance Records for All Aircraft
 -- Ensuring every tail number has at least one maintenance record
-INSERT INTO maintenance_work_orders (
+INSERT INTO fact_maintenance_work_orders (
         tail_number,
         issue_category,
         issue_description,
