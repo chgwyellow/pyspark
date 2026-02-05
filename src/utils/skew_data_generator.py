@@ -18,7 +18,7 @@ def generate_skewed_data(total_rows=5000000):
     Args:
         total_rows: Number of rows to generate (default: 5,000,000)
     """
-    start_date = datetime(2026, 1, 1)
+    start_date = datetime(2025, 1, 1)
 
     # Define aircraft identifiers
     skewed_tail = "B-58201"
