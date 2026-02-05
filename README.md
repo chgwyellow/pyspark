@@ -53,6 +53,10 @@ This is a systematic PySpark learning project focused on aviation industry data 
 - Understand storage formats and performance optimization (Parquet, Predicate Pushdown)
 - Build reproducible development environments with Docker
 
+### ⚠️ Disclaimer
+
+**All data used in this project is fictional and created solely for educational purposes.** While this project references real-world entities (such as aircraft registration numbers and airline operations) to provide realistic learning scenarios, all maintenance records, timestamps, and operational data are completely fabricated. This project is not affiliated with any airline or aviation organization, and should not be used as a source of actual aviation data.
+
 ### Features
 
 - **Complete Docker Environment**: One-command Spark development setup with PostgreSQL JDBC support

@@ -16,7 +16,7 @@ def main():
         "data/raw/equipment_logs_skewed.csv", header=True, inferSchema=True
     )
 
-    # Trigger a Shuffle (The most common place for skew to appear)
+    # Trigger a Shuffle
     # We group by device_id and calculate the average sensor value
     print("🚀 Running Shuffle with 12 partitions...")
 
