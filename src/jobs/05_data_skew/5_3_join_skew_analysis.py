@@ -25,16 +25,19 @@ def main():
         "driver": "org.postgresql.Driver",
     }
 
-    db_data = spark.read.jdbc(
-        url=db_url, table="fact_maintenance_logs", properties=properties
+    aircraft_master_df = spark.read.jdbc(
+        url=db_url, table="dim_aircraft", properties=properties
     )
 
-    aircraft_lookup = db_data.select("device_id", "aircraft_type").distinct()
+    print("🚀 Joining 5M skewed logs with master aircraft data...")
 
-    print("🚀 Triggering the Skewed Join (Large CSV x Small DB Table)...")
-
-    # 3. This Shuffle Hash Join will force all 4.5M 'B-58201' rows to one executor
-    skewed_joined_df = log_df.join(aircraft_lookup, on="device_id", how="inner")
+    # This join will trigger a Shuffle.
+    # Because B-58201 has 4.5M rows, one specific partition will be 100x larger than others.
+    skewed_joined_df = log_df.join(
+        aircraft_master_df, 
+        on=log_df.device_id == aircraft_master_df.tail_number, 
+        how="inner"
+    )
 
     # 4. Action: Force full computation to observe Spark UI
     print("⏳ Processing total count (this might take a moment due to skew)...")

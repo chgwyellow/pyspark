@@ -23,7 +23,7 @@ def main():
     # 3. Read Aircraft Master Data from PostgreSQL
     print("--- Reading Aircraft Master from Postgres ---")
     aircraft_df = spark.read.jdbc(
-        url=db_url, table="aircraft_master", properties=properties
+        url=db_url, table="dim_aircraft", properties=properties
     )
     aircraft_df.show()
 

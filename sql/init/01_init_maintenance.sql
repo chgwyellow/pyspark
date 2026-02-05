@@ -1,8 +1,8 @@
 CREATE DATABASE maintenance_db;
 -- 1. Drop Tables if Exist and Create New Ones
 DROP TABLE IF EXISTS maintenance_work_orders;
-DROP TABLE IF EXISTS aircraft_master;
-CREATE TABLE aircraft_master (
+DROP TABLE IF EXISTS dim_aircraft;
+CREATE TABLE dim_aircraft (
     tail_number VARCHAR(10) PRIMARY KEY,
     aircraft_type VARCHAR(20),
     delivery_date DATE,
@@ -18,7 +18,7 @@ CREATE TABLE maintenance_work_orders (
     reported_at TIMESTAMP
 );
 -- 2. Insert Fleet Data
-INSERT INTO aircraft_master
+INSERT INTO dim_aircraft
 VALUES -- Airbus A321neo (13 aircraft)
     ('B-58201', 'A321neo', '2021-10-21', 4500),
     ('B-58202', 'A321neo', '2021-12-05', 4200),

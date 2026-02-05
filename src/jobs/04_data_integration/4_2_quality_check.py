@@ -21,7 +21,7 @@ def main():
 
     # Dimension table
     aircraft_df = spark.read.jdbc(
-        url=db_url, table="aircraft_master", properties=properties
+        url=db_url, table="dim_aircraft", properties=properties
     )
 
     # 2. Perform Left Join
