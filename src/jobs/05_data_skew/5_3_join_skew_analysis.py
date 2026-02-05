@@ -8,6 +8,7 @@ from pyspark.sql import SparkSession
 def main():
     spark = (
         SparkSession.builder.appName("Join_Skew_Explosion")
+        .config("spark.sql.autoBroadcastJoinThreshold", "-1")  # Turn off auto broadcast
         .config("spark.sql.shuffle.partitions", "12")
         .getOrCreate()
     )
@@ -29,7 +30,7 @@ def main():
         url=db_url, table="dim_aircraft", properties=properties
     )
 
-    print("🚀 Joining 5M skewed logs with master aircraft data...")
+    print("🚀 Triggering a Raw Shuffle Join (No Pre-aggregation)...")
 
     # This join will trigger a Shuffle.
     # Because B-58201 has 4.5M rows, one specific partition will be 100x larger than others.
@@ -40,11 +41,11 @@ def main():
     )
 
     # 4. Action: Force full computation to observe Spark UI
-    print("⏳ Processing total count (this might take a moment due to skew)...")
-    final_count = skewed_joined_df.count()
+    # Turn off map-side optimization
+    print("⏳ Processing total records via RDD count to bypass Optimizer...")
+    final_count = skewed_joined_df.rdd.count()
 
     print(f"✅ Join finished. Total records: {final_count}")
-    print("\n👉 Check Spark UI: Look for the Task with massive 'Shuffle Read Size'.")
     input("Press Enter to finish and stop Spark...")
 
     spark.stop()

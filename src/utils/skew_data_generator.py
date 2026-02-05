@@ -22,7 +22,14 @@ def generate_skewed_data(total_rows=5000000):
 
     # Define aircraft identifiers
     skewed_tail = "B-58201"
-    other_tails = ["B-58202", "B-58301", "B-58302", "B-58501", "B-58502"]
+    all_tails = (
+        [f"B-582{i:02d}" for i in range(1, 14)]
+        + [f"B-583{i:02d}" for i in range(1, 7)]
+        + [f"B-585{i:02d}" for i in range(1, 11)]
+        + ["B-58551"]
+    )
+
+    other_tails = [tail for tail in all_tails if tail != skewed_tail]
 
     # Skew ratio: 90% logs belong to one aircraft (to demonstrate data skew)
     skew_count = int(total_rows * 0.9)
