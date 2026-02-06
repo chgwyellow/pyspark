@@ -1,13 +1,19 @@
+import os
+
 import pyspark.sql.functions as F
 
-from src.utils.spark_helper import get_spark_session, get_db_properties
+from src.utils.spark_helper import get_db_properties, get_spark_session
 
 
-def run_pipeline(salt_factor: int = 20):
+def run_pipeline():
     # 1. Initialize Spark & DB Config
     # Partitions will be picked up from os.environ by our helper
     spark = get_spark_session(app_name="Daily_Maintenance_ETL")
     db_config = get_db_properties()
+
+    # Get Salt Factor from environment (injected by run_job.py)
+    # Default to 20 if not found
+    salt_factor = int(os.getenv("SALT_FACTOR", "20"))
 
     print(f"\n🏗️  Starting ETL Pipeline with Salt Factor: {salt_factor}")
 
@@ -50,7 +56,8 @@ def run_pipeline(salt_factor: int = 20):
 
 
 def main():
-    run_pipeline(salt_factor=24)
+    # salt_factor will be read from SALT_FACTOR env var (set by run_job.py)
+    run_pipeline()
 
 
 if __name__ == "__main__":

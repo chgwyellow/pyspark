@@ -22,10 +22,19 @@ def main():
         help="Number of Spark shuffle partitions (default: 13)",
     )
 
+    # Optional args
+    parser.add_argument(
+        "--salt",
+        type=str,
+        default="20",
+        help="Salting factor for skew optimization",
+    )
+
     args = parser.parse_args()
 
-    # Store the partition count into environment variable temporarily
+    # Store the partition & salt count into environment variable temporarily
     os.environ["SPARK_SHUFFLE_PARTITIONS"] = args.partitions
+    os.environ["SALT_FACTOR"] = args.salt
 
     # 2. Construct the full module path
     # Example: src.jobs.05_data_skew.5_4_salting_optimization
@@ -33,6 +42,7 @@ def main():
 
     try:
         print(f"🚀 Dynamically loading job: {module_path}")
+        print(f"⚙️  Configs -> Partitions: {args.partitions}, Salt Factor: {args.salt}")
         # 3. Dynamic Import
         job_module = importlib.import_module(module_path)
 
