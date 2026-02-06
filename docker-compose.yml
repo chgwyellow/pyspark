@@ -9,6 +9,7 @@ services:
     env_file:
       - .env
     environment:
+      - PYTHONPATH=/app
       - JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
       - SPARK_CONF_DIR=/app/conf
       - POSTGRES_HOST=${POSTGRES_HOST:-host.docker.internal}

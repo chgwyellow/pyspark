@@ -8,16 +8,21 @@ from pyspark.sql import SparkSession
 DbConfig = namedtuple(typename="DbConfig", field_names=["url", "properties"])
 
 
-def get_spark_session(app_name="Aviation_Data_Pipeline", shuffle_partitions="13"):
+def get_spark_session(app_name: str = "Aviation_Data_Pipeline"):
     """
     Standardize SparkSession creation with production-grade configurations.
     - shuffle.partitions=13: Using a prime number to reduce hash collisions.
     - autoBroadcastJoinThreshold=-1: Disabled to allow testing of shuffle joins.
     """
+    # Pick up from environment (set by run_job.py) or use default '13'
+    partition_count = os.getenv(key="SPARK_SHUFFLE_PARTITIONS", default="13")
+
+    print(f"🔧 Spark Config: shuffle.partitions set to {partition_count}")
+
     return (
         SparkSession.builder.appName(app_name)
         .config("spark.sql.autoBroadcastJoinThreshold", "-1")
-        .config("spark.sql.shuffle.partitions", shuffle_partitions)
+        .config("spark.sql.shuffle.partitions", partition_count)
         .getOrCreate()
     )
 
