@@ -20,27 +20,56 @@
 
 ---
 
-## 📑 Table of Contents
+Table of Contents
 
-- [Overview](#overview)
-- [Quick Start](#quick-start)
-- [Learning Path](#learning-path)
-  - [Chapter 1: Spark Fundamentals](#chapter-1-spark-fundamentals)
-  - [Chapter 2: DataFrame Operations](#chapter-2-dataframe-operations)
-  - [Chapter 3: Advanced Operations](#chapter-3-advanced-operations)
-  - [Chapter 4: Data Integration & Analytics](#chapter-4-data-integration--analytics)
-- [Project Structure](#project-structure)
-- [Tech Stack](#tech-stack)
-- [Documentation](#documentation)
-- [Development Guide](#development-guide)
-- [Learning Resources](#learning-resources)
-- [FAQ](#faq)
+- [Aviation Data Analytics with PySpark](#aviation-data-analytics-with-pyspark)
+  - [Overview](#overview)
+    - [Learning Objectives](#learning-objectives)
+    - [Disclaimer](#disclaimer)
+    - [Features](#features)
+  - [Quick Start](#quick-start)
+    - [Prerequisites](#prerequisites)
+    - [Installation Steps](#installation-steps)
+    - [Running Examples](#running-examples)
+      - [Traditional Approach (Direct Execution)](#traditional-approach-direct-execution)
+      - [Modern Approach (Using run\_job.py - Recommended for Chapter 6+)](#modern-approach-using-run_jobpy---recommended-for-chapter-6)
+  - [Learning Path](#learning-path)
+    - [Chapter 1: Spark Fundamentals](#chapter-1-spark-fundamentals)
+    - [Chapter 2: DataFrame Operations](#chapter-2-dataframe-operations)
+    - [Chapter 3: Advanced Operations](#chapter-3-advanced-operations)
+    - [Chapter 4: Data Integration \& Analytics](#chapter-4-data-integration--analytics)
+    - [Chapter 5: Spark UI \& Data Skew](#chapter-5-spark-ui--data-skew)
+    - [Chapter 6: Pipeline Orchestration](#chapter-6-pipeline-orchestration)
+  - [Project Structure](#project-structure)
+  - [Tech Stack](#tech-stack)
+    - [Core Technologies](#core-technologies)
+    - [Data Processing Tools](#data-processing-tools)
+    - [Database \& Integration](#database--integration)
+    - [Development Tools](#development-tools)
+  - [Documentation](#documentation)
+    - [Core Concepts](#core-concepts)
+    - [Best Practices](#best-practices)
+      - [1. Logging Configuration](#1-logging-configuration)
+      - [2. Schema Definition](#2-schema-definition)
+      - [3. Database Integration](#3-database-integration)
+      - [4. Data Quality Verification](#4-data-quality-verification)
+  - [Development Guide](#development-guide)
+    - [Docker Commands](#docker-commands)
+    - [Local Development](#local-development)
+    - [Code Formatting](#code-formatting)
+    - [PostgreSQL Setup (for Chapter 4)](#postgresql-setup-for-chapter-4)
+  - [Learning Resources](#learning-resources)
+    - [Official Documentation](#official-documentation)
+    - [Recommended Reading](#recommended-reading)
+    - [Key Topics Covered](#key-topics-covered)
+  - [FAQ](#faq)
+  - [License](#license)
 
 ---
 
 ## Overview
 
-This is a systematic PySpark learning project focused on aviation industry data analytics scenarios. Learn distributed data processing core concepts and best practices through real-world equipment log data, from basic DataFrame operations to advanced analytics with PostgreSQL integration.
+This is a systematic PySpark learning project focused on aviation industry data analytics scenarios. Learn distributed data processing core concepts and best practices through real-world equipment log data, from basic DataFrame operations to production-grade pipeline orchestration.
 
 ### Learning Objectives
 
@@ -51,20 +80,25 @@ This is a systematic PySpark learning project focused on aviation industry data 
 - Master database integration with JDBC and data quality verification
 - Apply Window Functions for advanced analytics and ranking
 - Understand storage formats and performance optimization (Parquet, Predicate Pushdown)
+- **Diagnose and resolve data skew issues using Spark UI**
+- **Implement salting techniques for skewed join optimization**
+- **Build production-grade ETL pipelines with centralized orchestration**
 - Build reproducible development environments with Docker
 
-### ⚠️ Disclaimer
+### Disclaimer
 
 **All data used in this project is fictional and created solely for educational purposes.** While this project references real-world entities (such as aircraft registration numbers and airline operations) to provide realistic learning scenarios, all maintenance records, timestamps, and operational data are completely fabricated. This project is not affiliated with any airline or aviation organization, and should not be used as a source of actual aviation data.
 
 ### Features
 
 - **Complete Docker Environment**: One-command Spark development setup with PostgreSQL JDBC support
-- **Progressive Learning Path**: From basics to advanced, 4 comprehensive chapters
+- **Progressive Learning Path**: From basics to advanced, 6 comprehensive chapters
 - **Practice-Oriented**: Real aviation industry data scenarios with database integration
-- **Detailed Documentation**: 18+ markdown files covering theory and implementation
+- **Detailed Documentation**: 27+ markdown files covering theory and implementation
 - **Best Practices**: Production-grade configurations including logging, schema definition, and data quality checks
 - **Database Integration**: PostgreSQL connectivity with JDBC, data synchronization, and quality verification
+- **Performance Optimization**: Spark UI analysis, data skew diagnosis, and salting techniques
+- **Production Pipeline**: Centralized job runner with dynamic configuration and modular architecture
 
 ---
 
@@ -113,6 +147,8 @@ This is a systematic PySpark learning project focused on aviation industry data 
 
 ### Running Examples
 
+#### Traditional Approach (Direct Execution)
+
 ```bash
 # Chapter 1: Fundamentals
 docker-compose exec spark-lab python3 src/jobs/01_fundamentals/1_1_spark_core.py
@@ -133,6 +169,27 @@ docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_1_postgres_
 docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_2_quality_check.py
 docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_3_window_ranking.py
 docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_4_advanced_analytics.py
+
+# Chapter 5: Spark UI & Data Skew
+docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_2_ingestion_balance.py
+docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_3_join_skew_analysis.py
+docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_4_salting_optimization.py
+```
+
+#### Modern Approach (Using run_job.py - Recommended for Chapter 6+)
+
+```bash
+# Chapter 6: Production Pipeline with Dynamic Configuration
+docker-compose exec spark-lab python3 run_job.py \
+  --job pipeline.maintenance_daily_ingest \
+  --partitions 13 \
+  --salt 20
+
+# Run any job module dynamically
+docker-compose exec spark-lab python3 run_job.py \
+  --job jobs.05_data_skew.5_4_salting_optimization \
+  --partitions 17 \
+  --salt 24
 ```
 
 ---
@@ -182,9 +239,37 @@ docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_4_advanced_
 
 **Supplementary Materials:**
 
-- [Data Consistency](docs/04_data_integration/4_1_1_data_consistency.md) - Referential integrity and key mapping
-- [Data Validation](docs/04_data_integration/4_1_2_data_validation.md) - Quality gates and validation metrics
-- [JDBC Limitations](docs/04_data_integration/4_1_3_jdbc_limitations.md) - Understanding connection scope and DDL operations
+- [Data Consistency](docs/04_data_integration/4_1_supplement_data_consistency.md) - Referential integrity and key mapping
+- [Data Validation](docs/04_data_integration/4_1_supplement_data_validation.md) - Quality gates and validation metrics
+- [JDBC Limitations](docs/04_data_integration/4_1_supplement_jdbc_limitations.md) - Understanding connection scope and DDL operations
+- [UDF Performance](docs/04_data_integration/4_5_udf_performance_and_alternatives.md) - User-Defined Functions optimization
+- [Time Series Mastery](docs/04_data_integration/4_6_time_series_mastery.md) - Advanced time-based analytics
+
+### Chapter 5: Spark UI & Data Skew
+
+| Topic | Code | Documentation | Key Concepts |
+|-------|------|---------------|--------------|
+| **5.1 Spark UI Fundamentals** | N/A | [`5_1_spark_ui_fundamentals.md`](docs/05_ui_data_skew/5_1_spark_ui_fundamentals.md) | Jobs, Stages, Tasks, DAG Visualization |
+| **5.2 Identifying Data Skew** | [`5_2_ingestion_balance.py`](src/jobs/05_data_skew/5_2_ingestion_balance.py) | [`5_2_identifying_data_skew.md`](docs/05_ui_data_skew/5_2_identifying_data_skew.md) | Task Duration Variance, Partition Size Analysis |
+| **5.3 Join Skew Analysis** | [`5_3_join_skew_analysis.py`](src/jobs/05_data_skew/5_3_join_skew_analysis.py) | [`5_3_join_skew_analysis.md`](docs/05_ui_data_skew/5_3_join_skew_analysis.md) | Shuffle Read/Write Metrics, Skewed Joins |
+| **5.4 Salting Optimization** | [`5_4_salting_optimization.py`](src/jobs/05_data_skew/5_4_salting_optimization.py) | [`5_4_salting_technique.md`](docs/05_ui_data_skew/5_4_salting_technique.md) | Salt Keys, Hash Distribution, Performance Tuning |
+
+**Supplementary Materials:**
+
+- [Memory and Spill](docs/05_ui_data_skew/5_2_supplement_memory_and_spill.md) - Understanding memory pressure and disk spill
+
+### Chapter 6: Pipeline Orchestration
+
+| Topic | Code | Documentation | Key Concepts |
+|-------|------|---------------|--------------|
+| **6.1 Project Orchestration** | [`run_job.py`](run_job.py) + [`maintenance_daily_ingest.py`](src/pipeline/maintenance_daily_ingest.py) | [`6_1_project_orchestration.md`](docs/06_pipeline/6_1_project_orchestration.md) | Dynamic Job Loading, argparse, Environment Injection, Factory Pattern |
+
+**Key Features:**
+
+- **Centralized Job Runner**: Use `run_job.py` to dynamically load and execute any job module
+- **Configuration Management**: Centralized settings in `src/config/settings.py`
+- **Utility Layer**: Reusable helpers in `src/utils/spark_helper.py` (SparkSession factory, DB config)
+- **Production Pipeline**: `maintenance_daily_ingest.py` demonstrates real-world ETL with salting optimization
 
 ---
 
@@ -196,36 +281,49 @@ pyspark/
 ├── conf/
 │   └── log4j.properties        # Spark logging configuration
 ├── data/
-│   ├── raw/                    # Raw CSV data files
+│   ├── raw/                    # Raw CSV data files (generated by utils)
 │   └── processed/              # Processed Parquet files
-├── docs/                       # Learning documentation (18 files)
+├── docs/                       # Learning documentation (27 files)
 │   ├── 01_fundamentals/
 │   │   ├── 1_1_spark_core.md
-│   │   └── 1_2_data_ingestion.md
+│   │   ├── 1_2_data_ingestion.md
+│   │   └── 1_3_understanding_rdds.md
 │   ├── 02_dataframe_operations/
 │   │   ├── 2_1_basic_operations.md
 │   │   ├── 2_2_casting_and_nulls.md
-│   │   ├── 2_3_complex_types.md
+│   │   ├── 2_3_supplement_complex_types.md
 │   │   └── 2_3_1_explode_vs_pivot.md
 │   ├── 03_advanced_operations/
 │   │   ├── 3_1_aggregation_and_grouping.md
 │   │   ├── 3_2_join_strategies.md
-│   │   ├── 3_2_1_broadcast_join.md
+│   │   ├── 3_2_supplement_broadcast_join.md
 │   │   ├── 3_3_data_storage_formats.md
-│   │   └── 3_3_1_predicate_pushdown.md
-│   └── 04_data_integration/
-│       ├── 4_1_spark_jdbc_fundamentals.md
-│       ├── 4_1_1_data_consistency.md
-│       ├── 4_1_2_data_validation.md
-│       ├── 4_1_3_jdbc_limitations.md
-│       ├── 4_2_data_quality_verification.md
-│       ├── 4_3_window_functions_ranking.md
-│       └── 4_4_advanced_window_frames.md
+│   │   └── 3_3_supplement_predicate_pushdown.md
+│   ├── 04_data_integration/
+│   │   ├── 4_1_spark_jdbc_fundamentals.md
+│   │   ├── 4_1_supplement_data_consistency.md
+│   │   ├── 4_1_supplement_data_validation.md
+│   │   ├── 4_1_supplement_jdbc_limitations.md
+│   │   ├── 4_2_data_quality_verification.md
+│   │   ├── 4_3_window_functions_ranking.md
+│   │   ├── 4_4_advanced_window_frames.md
+│   │   ├── 4_5_udf_performance_and_alternatives.md
+│   │   └── 4_6_time_series_mastery.md
+│   ├── 05_ui_data_skew/
+│   │   ├── 5_1_spark_ui_fundamentals.md
+│   │   ├── 5_2_identifying_data_skew.md
+│   │   ├── 5_2_supplement_memory_and_spill.md
+│   │   ├── 5_3_join_skew_analysis.md
+│   │   └── 5_4_salting_technique.md
+│   └── 06_pipeline/
+│       └── 6_1_project_orchestration.md
 ├── sql/
 │   └── init/
 │       └── 01_init_maintenance.sql  # PostgreSQL schema initialization
 ├── src/
-│   ├── jobs/                   # PySpark job scripts (13 files)
+│   ├── config/                 # Global configuration
+│   │   └── settings.py         # Project-wide settings (namedtuple)
+│   ├── jobs/                   # Learning scripts (Chapters 1-5)
 │   │   ├── 01_fundamentals/
 │   │   │   ├── 1_1_spark_core.py
 │   │   │   └── 1_2_data_ingestion.py
@@ -241,12 +339,24 @@ pyspark/
 │   │   │   ├── 4_1_postgres_sync.py
 │   │   │   ├── 4_2_quality_check.py
 │   │   │   ├── 4_3_window_ranking.py
-│   │   │   └── 4_4_advanced_analytics.py
+│   │   │   ├── 4_4_advanced_analytics.py
+│   │   │   ├── 4_5_udf_implementation.py
+│   │   │   └── 4_6_time_mastery.py
+│   │   ├── 05_data_skew/
+│   │   │   ├── 5_2_ingestion_balance.py
+│   │   │   ├── 5_3_join_skew_analysis.py
+│   │   │   └── 5_4_salting_optimization.py
 │   │   └── check_env.py
-│   └── utils/
-│       └── generate_raw_data.py
+│   ├── pipeline/               # Production ETL pipelines (Chapter 6)
+│   │   └── maintenance_daily_ingest.py
+│   └── utils/                  # Shared utilities
+│       ├── spark_helper.py     # SparkSession factory, DB config
+│       ├── generate_raw_data.py
+│       ├── skew_data_generator.py
+│       └── debug_hash_distribution.py
 ├── tests/                      # Unit tests
 ├── notebook/                   # Jupyter notebooks
+├── run_job.py                  # 🎯 Central job runner (Chapter 6)
 ├── .env.example                # Environment variables template
 ├── Dockerfile                  # Spark + PostgreSQL JDBC driver
 ├── docker-compose.yml          # Container orchestration
@@ -478,6 +588,8 @@ poetry run isort src/
 - **Chapter 2**: DataFrame transformations, type casting, null handling, complex types
 - **Chapter 3**: Aggregations, join strategies, broadcast joins, storage formats, predicate pushdown
 - **Chapter 4**: JDBC connectivity, data quality verification, window functions, moving averages, gaps and islands
+- **Chapter 5**: Spark UI analysis, data skew diagnosis, task duration variance, salting techniques, hash distribution
+- **Chapter 6**: Dynamic job loading, centralized orchestration, factory pattern, environment injection, production ETL pipelines
 
 ---
 

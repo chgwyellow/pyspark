@@ -39,7 +39,7 @@ def get_db_properties() -> namedtuple:
     # Use host.docker.internal for local docker development
     db_host = os.getenv("POSTGRES_HOST", "host.docker.internal")
     db_port = os.getenv("POSTGRES_PORT", "5432")
-    db_name = os.getenv("POSTGRES_DB", "maintenance_db")
+    db_name = os.getenv(APP_SETTINGS.db_name, "maintenance_db")
 
     url = f"jdbc:postgresql://{db_host}:{db_port}/{db_name}"
 
