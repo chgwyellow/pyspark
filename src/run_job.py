@@ -11,7 +11,7 @@ def main():
     parser.add_argument(
         "--job",
         required=True,
-        help="The name of the job module to run (e.g., 05_data_skew.5_4_salting_optimization)",
+        help="The name of the job module to run (e.g., jobs.05_data_skew.5_4_salting_optimization)",
     )
 
     # Optional args
@@ -29,7 +29,7 @@ def main():
 
     # 2. Construct the full module path
     # Example: src.jobs.05_data_skew.5_4_salting_optimization
-    module_path = f"src.jobs.{args.job}"
+    module_path = f"src.{args.job}"
 
     try:
         print(f"🚀 Dynamically loading job: {module_path}")
