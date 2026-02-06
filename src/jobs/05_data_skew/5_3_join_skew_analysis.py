@@ -1,7 +1,5 @@
 import os
 
-import pyspark.sql.functions as F
-
 from pyspark.sql import SparkSession
 
 
@@ -9,7 +7,7 @@ def main():
     spark = (
         SparkSession.builder.appName("Join_Skew_Explosion")
         .config("spark.sql.autoBroadcastJoinThreshold", "-1")  # Turn off auto broadcast
-        .config("spark.sql.shuffle.partitions", "12")
+        .config("spark.sql.shuffle.partitions", "39")
         .getOrCreate()
     )
 

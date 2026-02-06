@@ -60,4 +60,4 @@ def analyze_hash_distribution(num_partitions=12):
 
 if __name__ == "__main__":
     # Test with your current setting
-    analyze_hash_distribution(num_partitions=12)
+    analyze_hash_distribution(num_partitions=13)
