@@ -2,20 +2,21 @@ import os
 from collections import namedtuple
 
 from pyspark.sql import SparkSession
+from src.config.settings import APP_SETTINGS
 
 # Define a structured container for Database configuration
 # This provides immutable, named access to DB settings
 DbConfig = namedtuple(typename="DbConfig", field_names=["url", "properties"])
 
 
-def get_spark_session(app_name: str = "Aviation_Data_Pipeline"):
+def get_spark_session(app_name: str = APP_SETTINGS.app_name):
     """
     Standardize SparkSession creation with production-grade configurations.
     - shuffle.partitions=13: Using a prime number to reduce hash collisions.
     - autoBroadcastJoinThreshold=-1: Disabled to allow testing of shuffle joins.
     """
     # Pick up from environment (set by run_job.py) or use default '13'
-    partition_count = os.getenv(key="SPARK_SHUFFLE_PARTITIONS", default="13")
+    partition_count = os.getenv(key="SPARK_SHUFFLE_PARTITIONS", APP_SETTINGS.default_partitions)
 
     print(f"🔧 Spark Config: shuffle.partitions set to {partition_count}")
 
