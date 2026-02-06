@@ -1,6 +1,7 @@
 import argparse
 import importlib
 import os
+import sys
 
 
 def main():
@@ -41,14 +42,20 @@ def main():
     module_path = f"src.{args.job}"
 
     try:
-        print(f"🚀 Dynamically loading job: {module_path}")
+        print("=" * 60)
+        print(f"🚀 Launching Job: {module_path}")
         print(f"⚙️  Configs -> Partitions: {args.partitions}, Salt Factor: {args.salt}")
+        print("-" * 60)
+
         # 3. Dynamic Import
         job_module = importlib.import_module(module_path)
 
         # 4. Execute the main() function of the job
         if hasattr(job_module, "main"):
             job_module.main()
+
+            print("-" * 60)
+            print(f"✅ Job '{args.job}' completed successfully.")
         else:
             print(f"❌ Error: {module_path} does not have a main() function.")
 
@@ -57,6 +64,7 @@ def main():
         print(f"Details: {e}")
     except Exception as e:
         print(f"🔥 Unexpected error during execution: {e}")
+        sys.exit(1)  # shut down the program when the error exists
 
 
 if __name__ == "__main__":

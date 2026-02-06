@@ -28,6 +28,10 @@ def run_pipeline():
 
     # 3. Transform: Salting Logic (Modular Implementation)
     # We salt the logs (Left Table)
+    import time
+
+    compute_start = time.time()
+
     salted_log_df = log_df.withColumn(
         "salted_id",
         F.concat(F.col("device_id"), F.lit("_"), F.floor(F.rand() * salt_factor)),
@@ -45,9 +49,13 @@ def run_pipeline():
         "salted_id", "salt"
     )
 
+    result_count = enriched_df.count()
+
+    compute_end = time.time()
+
     # 4. Load (Optional: In this stage, we might just show count or write to a new table)
     # Target table name can also be moved to settings.py late
-    print(f"\n📊 Processed Record Count: {enriched_df.count()}")
+    print(f"📊 Processed {result_count} rows in {compute_end - compute_start:.2f}s")
     enriched_df.show()
 
     input("Press Enter to continue...")
