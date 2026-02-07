@@ -1,4 +1,5 @@
 import os
+import sys
 
 import pyspark.sql.functions as F
 
@@ -92,6 +93,25 @@ def run_pipeline():
     # --- 4. Final Output (Load placeholder) ---
     print(f"📊 Processed {result_count} rows in {compute_end - compute_start:.2f}s")
     enriched_df.show()
+
+    # --- 5. Load  ---
+    # Define the table name, recommending adding the type prefixing to distinguish the raw or processed data
+    target_table = "fact_aviation_maintenance_gold"
+
+    print(f"💾 Saving results to PostgreSQL table: {target_table}...")
+
+    try:
+        enriched_df.write.jdbc(
+            url=db_config.url,
+            table=target_table,
+            properties=db_config.properties,
+            mode="overwrite",
+        )
+        print(f"✨ Success! Data successfully persisted to {target_table}.")
+
+    except Exception as e:
+        print(f"🔥 Database Write Error: {e}")
+        sys.exit(1)
 
     input("Press Enter to continue...")
 
