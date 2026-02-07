@@ -62,6 +62,7 @@ def main():
     except ImportError as e:
         print(f"❌ Module not found: {module_path}")
         print(f"Details: {e}")
+        sys.exit(1)
     except Exception as e:
         print(f"🔥 Unexpected error during execution: {e}")
         sys.exit(1)  # shut down the program when the error exists
