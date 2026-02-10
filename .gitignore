@@ -13,3 +13,5 @@ __pycache__/
 
 # Docker usage guide (local reference only)
 DOCKER_USAGE.md
+
+spark-warehouse/
