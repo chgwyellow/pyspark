@@ -33,6 +33,7 @@ Table of Contents
     - [Running Examples](#running-examples)
       - [Traditional Approach (Direct Execution)](#traditional-approach-direct-execution)
       - [Modern Approach (Using run\_job.py - Recommended for Chapter 6+)](#modern-approach-using-run_jobpy---recommended-for-chapter-6)
+      - [Automated Deployment (Using deploy.sh - Production Ready)](#automated-deployment-using-deploysh---production-ready)
   - [Learning Path](#learning-path)
     - [Chapter 1: Spark Fundamentals](#chapter-1-spark-fundamentals)
     - [Chapter 2: DataFrame Operations](#chapter-2-dataframe-operations)
@@ -40,6 +41,7 @@ Table of Contents
     - [Chapter 4: Data Integration \& Analytics](#chapter-4-data-integration--analytics)
     - [Chapter 5: Spark UI \& Data Skew](#chapter-5-spark-ui--data-skew)
     - [Chapter 6: Pipeline Orchestration](#chapter-6-pipeline-orchestration)
+    - [Chapter 7: SparkSQL \& Hybrid Pipelines](#chapter-7-sparksql--hybrid-pipelines)
   - [Project Structure](#project-structure)
   - [Tech Stack](#tech-stack)
     - [Core Technologies](#core-technologies)
@@ -55,6 +57,7 @@ Table of Contents
       - [4. Data Quality Verification](#4-data-quality-verification)
   - [Development Guide](#development-guide)
     - [Docker Commands](#docker-commands)
+    - [Deployment Automation](#deployment-automation)
     - [Local Development](#local-development)
     - [Code Formatting](#code-formatting)
     - [PostgreSQL Setup (for Chapter 4)](#postgresql-setup-for-chapter-4)
@@ -83,6 +86,8 @@ This is a systematic PySpark learning project focused on aviation industry data 
 - **Diagnose and resolve data skew issues using Spark UI**
 - **Implement salting techniques for skewed join optimization**
 - **Build production-grade ETL pipelines with centralized orchestration**
+- **Master SparkSQL for complex business logic and hybrid Python/SQL pipelines**
+- **Implement SQL-based Data Quality checks and Window Functions**
 - Build reproducible development environments with Docker
 
 ### Disclaimer
@@ -92,13 +97,14 @@ This is a systematic PySpark learning project focused on aviation industry data 
 ### Features
 
 - **Complete Docker Environment**: One-command Spark development setup with PostgreSQL JDBC support
-- **Progressive Learning Path**: From basics to advanced, 6 comprehensive chapters
+- **Progressive Learning Path**: From basics to advanced, 7 comprehensive chapters
 - **Practice-Oriented**: Real aviation industry data scenarios with database integration
-- **Detailed Documentation**: 29 markdown files covering theory and implementation
+- **Detailed Documentation**: 33 markdown files covering theory and implementation
 - **Best Practices**: Production-grade configurations including logging, schema definition, and data quality checks
 - **Database Integration**: PostgreSQL connectivity with JDBC, data synchronization, and quality verification
 - **Performance Optimization**: Spark UI analysis, data skew diagnosis, and salting techniques
-- **Production Pipeline**: Centralized job runner with dynamic configuration and modular architecture
+- **Production Pipeline**: Centralized job runner with hybrid Python/SQL support and modular architecture
+- **Hybrid Patterns**: Seamlessly switching between DataFrame API and SparkSQL for optimal readability
 
 ---
 
@@ -174,6 +180,11 @@ docker-compose exec spark-lab python3 src/jobs/04_data_integration/4_4_advanced_
 docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_2_ingestion_balance.py
 docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_3_join_skew_analysis.py
 docker-compose exec spark-lab python3 src/jobs/05_data_skew/5_4_salting_optimization.py
+
+# Chapter 7: SparkSQL
+docker-compose exec spark-lab python3 src/jobs/07_spark_sql/7_1_sql_basics.py
+docker-compose exec spark-lab python3 src/jobs/07_spark_sql/7_2_complex_logic.py
+docker-compose exec spark-lab python3 src/jobs/07_spark_sql/7_3_window_functions.py
 ```
 
 #### Modern Approach (Using run_job.py - Recommended for Chapter 6+)
@@ -184,6 +195,11 @@ docker-compose exec spark-lab python3 run_job.py \
   --job pipeline.maintenance_daily_ingest \
   --partitions 13 \
   --salt 20
+
+# Chapter 7: Hybrid SQL Pipeline (SQL Content inside Python)
+docker-compose exec spark-lab python3 run_job.py \
+  --job pipeline.maintenance_daily_ingest_sql \
+  --salt 24
 
 # Run any job module dynamically
 docker-compose exec spark-lab python3 run_job.py \
@@ -285,6 +301,15 @@ chmod +x deploy.sh
 | **6.1 Project Orchestration** | [`run_job.py`](run_job.py) + [`maintenance_daily_ingest.py`](src/pipeline/maintenance_daily_ingest.py) | [`6_1_project_orchestration.md`](docs/06_pipeline/6_1_project_orchestration.md) | Dynamic Job Loading, argparse, Environment Injection, Factory Pattern |
 | **6.2 Deployment Automation** | [`deploy.sh`](deploy.sh) | N/A | Bash Scripting, Container Orchestration, CI/CD Readiness |
 
+### Chapter 7: SparkSQL & Hybrid Pipelines
+
+| Topic | Code | Documentation | Key Concepts |
+|-------|------|---------------|--------------|
+| **7.1 SQL Basics** | [`7_1_sql_basics.py`](src/jobs/07_spark_sql/7_1_sql_basics.py) | [`7_1_spark_sql_fundamentals.md`](docs/07_spark_sql/7_1_spark_sql_fundamentals.md) | Temporary Views, Catalog API, Catalyst Optimizer |
+| **7.2 Complex Logic** | [`7_2_complex_logic.py`](src/jobs/07_spark_sql/7_2_complex_logic.py) | [`7_2_complex_logic_in_sql.md`](docs/07_spark_sql/7_2_complex_logic_in_sql.md) | CTE (Common Table Expressions), CASE WHEN, String Ops |
+| **7.3 window Functions** | [`7_3_window_functions.py`](src/jobs/07_spark_sql/7_3_window_functions.py) | [`7_3_window_function.md`](docs/07_spark_sql/7_3_window_function.md) | OVER, PARTITION BY, RANK, LAG/LEAD |
+| **7.4 Hybrid Pipeline** | [`maintenance_daily_ingest_sql.py`](src/pipeline/maintenance_daily_ingest_sql.py) | [`7_4_integrating_sparksql_into_data_pipelines.md`](docs/07_spark_sql/7_4_integrating_sparksql_into_data_pipelines.md) | SQL-based DQ Checks, Salting in SQL, Hybrid Workflow |
+
 **Supplementary Materials:**
 
 - [Data Quality Validation](docs/06_pipeline/6_2_data_quality_validation.md) - Production-grade validation strategies
@@ -296,6 +321,7 @@ chmod +x deploy.sh
 - **Configuration Management**: Centralized settings in `src/config/settings.py`
 - **Utility Layer**: Reusable helpers in `src/utils/spark_helper.py` (SparkSession factory, DB config)
 - **Production Pipeline**: `maintenance_daily_ingest.py` demonstrates real-world ETL with salting optimization
+- **SQL-Based Innovation**: `maintenance_daily_ingest_sql.py` showcases advanced hybrid Python/SQL orchestration
 - **Automated Deployment**: `deploy.sh` provides one-command deployment with health checks
 
 ---
@@ -342,8 +368,13 @@ pyspark/
 │   │   ├── 5_2_supplement_memory_and_spill.md
 │   │   ├── 5_3_join_skew_analysis.md
 │   │   └── 5_4_salting_technique.md
-│   └── 06_pipeline/
-│       └── 6_1_project_orchestration.md
+│   ├── 06_pipeline/
+│   │   └── 6_1_project_orchestration.md
+│   └── 07_spark_sql/
+│       ├── 7_1_spark_sql_fundamentals.md
+│       ├── 7_2_complex_logic_in_sql.md
+│       ├── 7_3_window_function.md
+│       └── 7_4_integrating_sparksql_into_data_pipelines.md
 ├── sql/
 │   └── init/
 │       └── 01_init_maintenance.sql  # PostgreSQL schema initialization
@@ -373,9 +404,14 @@ pyspark/
 │   │   │   ├── 5_2_ingestion_balance.py
 │   │   │   ├── 5_3_join_skew_analysis.py
 │   │   │   └── 5_4_salting_optimization.py
+│   │   ├── 07_spark_sql/       # 3 scripts
+│   │   │   ├── 7_1_sql_basics.py
+│   │   │   ├── 7_2_complex_logic.py
+│   │   │   └── 7_3_window_functions.py
 │   │   └── check_env.py
-│   ├── pipeline/               # Production ETL pipelines (Chapter 6)
-│   │   └── maintenance_daily_ingest.py
+│   ├── pipeline/               # Production ETL pipelines (Chapter 6 & 7)
+│   │   ├── maintenance_daily_ingest.py
+│   │   └── maintenance_daily_ingest_sql.py
 │   └── utils/                  # Shared utilities (5 files)
 │       ├── spark_helper.py     # SparkSession factory, DB config
 │       ├── generate_raw_data.py
@@ -383,8 +419,8 @@ pyspark/
 │       └── debug_hash_distribution.py
 ├── tests/                      # Unit tests
 ├── notebook/                   # Jupyter notebooks
-├── run_job.py                  # 🎯 Central job runner (Chapter 6)
-├── deploy.sh                   # 🚀 Automated deployment script
+├── run_job.py                  # Central job runner (Chapter 6)
+├── deploy.sh                   # Automated deployment script
 ├── .env.example                # Environment variables template
 ├── Dockerfile                  # Spark + PostgreSQL JDBC driver
 ├── docker-compose.yml          # Container orchestration
@@ -641,6 +677,7 @@ poetry run isort src/
 - **Chapter 4**: JDBC connectivity, data quality verification, window functions, moving averages, gaps and islands
 - **Chapter 5**: Spark UI analysis, data skew diagnosis, task duration variance, salting techniques, hash distribution
 - **Chapter 6**: Dynamic job loading, centralized orchestration, factory pattern, environment injection, production ETL pipelines
+- **Chapter 7**: SparkSQL, Temporary Views, CTEs, Window Functions, Hybrid Python/SQL pipelines, SQL-based Data Quality
 
 ---
 

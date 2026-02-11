@@ -24,7 +24,7 @@ def main():
             total_flight_hours,
             -- Rank the top hours
             Rank() over(
-                partition by aircraft_type 
+                partition by aircraft_type
                 order by total_flight_hours desc
             ) as hours_rank,
             -- Top hour in every type
