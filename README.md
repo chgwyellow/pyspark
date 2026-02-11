@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)
 ![Poetry](https://img.shields.io/badge/Poetry-Managed-60A5FA?style=flat&logo=poetry&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-11-007396?style=flat&logo=openjdk&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-success?style=flat)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=flat)
 ![Updated](https://img.shields.io/badge/Updated-Feb%202026-brightgreen?style=flat)
 
 **A comprehensive learning project for mastering Apache Spark and distributed data processing, designed for aviation industry data analytics applications.**
